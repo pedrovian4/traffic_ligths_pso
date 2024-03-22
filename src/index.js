@@ -125,13 +125,28 @@ function moveUpCars(){
     
     for (let i = 0 ; i < upCars.length; i++){
         if(currentColor == "green"){
-            upCars[i].position +=100*Math.random()%5; 
+            upCars[i].position +=5; 
         }
-        if(upCars[i].position > 30){
-            upCars[i].position +=100*Math.random()%5;     
+        else if(upCars[i].position > 25){
+            upCars[i].position +=5;     
         }
     }
 
+}
+let downCars = [{position:0}]
+let downCarspositions = [0];
+
+function moveDownCars()
+{
+    
+    for (let i = 0 ; i < downCars.length; i++){
+        if(currentColor == "green"){
+            downCars[i].position -=5; 
+        }
+        else if(downCars[i].position > 25){
+            downCars[i].position -=5;     
+        }
+    }
 }
 
 
@@ -156,16 +171,20 @@ function drawUpcars(){
 
 
 
-let downCars = [{position:-30}]
-let downCount = 0;
 function drawDownCars(){
     const backgroundColor = "blue";
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const moveDown = centerY+60 + downCount
+    const moveDown = centerY+60 
     for (let i =  0; i<downCars.length; i++){        
-        ctx.fillStyle = backgroundColor;
-        ctx.fillRect(centerX -20, moveDown , 20, 20);
+        if(-canvas.height < downCars[i].position ){
+            ctx.fillStyle = backgroundColor;
+            ctx.fillRect(centerX-20, moveDown + downCars[i].position , 20, 20);
+        }else{
+            ctx.fillRect(centerX-20, moveDown + downCarspositions[i], 20, 20);
+            downCars[i].position = downCarspositions[i];
+        }
+
     }
 }
 
@@ -184,6 +203,7 @@ function drawCars(){
 
 function moveVerticalCars(){
     moveUpCars();
+    moveDownCars();
 
 }
 
