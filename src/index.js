@@ -127,6 +127,9 @@ function moveUpCars(){
         if(currentColor == "green"){
             upCars[i].position +=100*Math.random()%5; 
         }
+        if(upCars[i].position > 30){
+            upCars[i].position +=100*Math.random()%5;     
+        }
     }
 
 }
