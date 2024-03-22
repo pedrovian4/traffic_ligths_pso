@@ -109,7 +109,7 @@ function drawHorizontalCars(cars) {
 
 function moveHoriZontalCars() {
     for (let i = 0; i < cars.length; i++) {
-        if(cars[i].position > 25){
+        if(cars[i].position > 20){
             cars[i].position+=3
         }
         if (currentColor == 'red'){
@@ -119,28 +119,75 @@ function moveHoriZontalCars() {
     }
 }
 
+let upCars = [{position:-70}]
+let upCarsPosicoes = [-70];
+function moveUpCars(){
+    
+    for (let i = 0 ; i < upCars.length; i++){
+        if(currentColor == "green"){
+            upCars[i].position +=100*Math.random()%5; 
+        }
+    }
+
+}
 
 
 
-function drawVerticalCars(carsVertical) {
+function drawUpcars(){
     const backgroundColor = "blue";
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const carWidth = 20;
-    const carHeight = 20;
-    const roadWidth = 900;
-
-    for (let i = 0; i < carsVertical.length; i++) {
-        const carY = carsVertical[i].position;
-        if (carY > -roadWidth && carY < roadWidth) { // Check if the car is within the road width
+    const moveUp = centerY;
+    for (let i =  0; i<upCars.length; i++){        
+        
+        if (canvas.height > moveUp + upCars[i].position){
             ctx.fillStyle = backgroundColor;
-            ctx.fillRect(centerX + 22 - carWidth / 2, centerY + carY - 80, carWidth, carHeight);
+            ctx.fillRect(centerX +10, moveUp + upCars[i].position, 20, 20);
+        }else{
+            ctx.fillRect(centerX +10, moveUp + upCarsPosicoes[i], 20, 20);
+            upCars[i].position =  upCarsPosicoes[i];
         }
+
     }
 }
 
 
 
+let downCars = [{position:-30}]
+let downCount = 0;
+function drawDownCars(){
+    const backgroundColor = "blue";
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const moveDown = centerY+60 + downCount
+    for (let i =  0; i<downCars.length; i++){        
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(centerX -20, moveDown , 20, 20);
+    }
+}
+
+
+
+
+function drawVerticalCars(){
+    drawUpcars();
+    drawDownCars();
+}
+
+function drawCars(){
+    drawHorizontalCars(cars);
+    drawVerticalCars();
+}
+
+function moveVerticalCars(){
+    moveUpCars();
+
+}
+
+function moveCars (){
+    moveHoriZontalCars();
+    moveVerticalCars();
+}
 
 
 let i = 0;
@@ -148,10 +195,8 @@ setInterval(() => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawRoads();
     drawTrafficLight(currentColor);
-    drawHorizontalCars(cars);
-    drawVerticalCars([{position: 10}, {position: 10}])
-    moveHoriZontalCars();
-    
+    drawCars();
+    moveCars();
    }, 30);
 
 setInterval(() => {
